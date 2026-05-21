@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeIQ — AI Resume Rater</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F0E8;
+    --ink: #1A1814;
+    --ink-soft: #4A4640;
+    --ink-muted: #8A8680;
+    --gold: #C99B4B;
+    --gold-light: #F0E4C0;
+    --red-grade: #C0392B;
+    --orange-grade: #D35400;
+    --yellow-grade: #D4A017;
+    --green-grade: #1E8449;
+    --emerald-grade: #0B6B3A;
+    --border: rgba(26,24,20,0.12);
+    --border-strong: rgba(26,24,20,0.25);
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(26,24,20,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,24,20,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* HEADER */
+  header {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .logo-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 7vw, 68px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .tagline {
+    font-size: 15px;
+    color: var(--ink-muted);
+    font-weight: 300;
+    margin-top: 12px;
+    letter-spacing: 0.01em;
+  }
+
+  .header-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    border: 1px solid var(--border-strong);
+    padding: 6px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* UPLOAD */
+  #upload-section { margin-bottom: 48px; }
+
+  .drop-zone {
+    border: 1.5px dashed var(--border-strong);
+    border-radius: 4px;
+    padding: 64px 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(255,255,255,0.4);
+    position: relative;
+  }
+
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--gold);
+    background: rgba(201,155,75,0.05);
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .drop-label {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .drop-sub {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  .file-selected {
+    margin-top: 20px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+
+  .file-selected.show { display: flex; }
+
+  .file-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .btn-analyze {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    padding: 14px 32px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .btn-analyze:hover { background: #333; }
+  .btn-analyze:disabled { background: var(--ink-muted); cursor: not-allowed; }
+
+  /* LOADING */
+  #loading-section { display: none; text-align: center; padding: 80px 0; }
+
+  .loading-ring {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 24px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-msg {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* RESULTS */
+  #results-section { display: none; }
+
+  .result-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 56px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* SCORE RING */
+  .score-ring-wrap {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    flex-shrink: 0;
+  }
+
+  .score-ring-wrap svg { transform: rotate(-90deg); }
+
+  .score-ring-bg {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 6;
+  }
+
+  .score-ring-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1), stroke 0.3s;
+  }
+
+  .score-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .score-denom {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+
+  .result-meta {}
+
+  .grade-pill {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .result-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .result-summary {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* CATEGORIES */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .categories-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.5);
+  }
+
+  .cat-row {
+    display: grid;
+    grid-template-columns: 1fr 200px 60px;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+
+  .cat-row:last-child { border-bottom: none; }
+  .cat-row.visible { opacity: 1; transform: none; }
+
+  .cat-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .cat-weight {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+
+  .cat-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .cat-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    background: var(--gold);
+  }
+
+  .cat-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: right;
+    color: var(--ink);
+  }
+
+  /* FEEDBACK */
+  .feedback-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 580px) {
+    .feedback-cols { grid-template-columns: 1fr; }
+    .result-header { grid-template-columns: 1fr; text-align: center; }
+    .score-ring-wrap { margin: 0 auto; }
+  }
+
+  .feedback-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    background: rgba(255,255,255,0.5);
+  }
+
+  .feedback-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-green { background: var(--green-grade); }
+  .dot-amber { background: var(--yellow-grade); }
+
+  .feedback-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feedback-list li {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    padding-left: 14px;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .feedback-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ink-muted);
+    font-size: 11px;
+    top: 2px;
+  }
+
+  /* RESET */
+  .btn-reset {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--ink-muted);
+    border: 1px solid var(--border-strong);
+    padding: 12px 28px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-reset:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* ERROR */
+  .error-box {
+    display: none;
+    background: rgba(192,57,43,0.06);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 3px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #922B21;
+    margin-top: 16px;
+    font-family: 'DM Mono', monospace;
+    line-height: 1.5;
+  }
+
+  .error-box.show { display: block; }
+
+  footer {
+    text-align: center;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="logo-mark">ResumeIQ</div>
+      <h1>Rate your<br><em>résumé.</em></h1>
+      <p class="tagline">Instant AI-powered scoring based on modern hiring standards.</p>
+    </div>
+    <div class="header-badge">v2.0 · claude-powered</div>
+  </header>
+
+  <!-- UPLOAD -->
+  <section id="upload-section">
+    <div class="drop-zone" id="drop-zone">
+      <input type="file" id="file-input" accept=".pdf,.docx,.txt" />
+      <div class="upload-icon">📄</div>
+      <div class="drop-label">Drop your résumé here</div>
+      <div class="drop-sub">PDF · DOCX · TXT &nbsp;·&nbsp; max 5MB</div>
+    </div>
+
+    <div class="file-selected" id="file-selected">
+      <span style="font-size:18px">📎</span>
+      <span class="file-name" id="file-name-display">—</span>
+      <span style="font-size:13px;color:var(--ink-muted);font-family:'DM Mono',monospace" id="file-size-display"></span>
+    </div>
+
+    <div class="error-box" id="error-box"></div>
+
+    <button class="btn-analyze" id="btn-analyze" disabled onclick="analyzeResume()">
+      Analyze Résumé
+    </button>
+  </section>
+
+  <!-- LOADING -->
+  <section id="loading-section">
+    <div class="loading-ring"></div>
+    <div class="loading-msg" id="loading-msg">Reading your résumé…</div>
+    <div class="loading-sub" id="loading-sub">Extracting content and structure</div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results-section">
+
+    <div class="result-header">
+      <div class="score-ring-wrap">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="score-ring-bg" cx="80" cy="80" r="70"/>
+          <circle class="score-ring-fill" id="score-ring-fill" cx="80" cy="80" r="70"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-number" id="score-display">0</div>
+          <div class="score-denom">/ 100</div>
+        </div>
+      </div>
+
+      <div class="result-meta">
+        <div class="grade-pill" id="grade-pill">—</div>
+        <div class="result-title" id="result-title">—</div>
+        <div class="result-summary" id="result-summary">—</div>
+      </div>
+    </div>
+
+    <div class="section-label">Category Breakdown</div>
+    <div class="categories-grid" id="categories-grid"></div>
+
+    <div class="feedback-cols">
+      <div class="feedback-card">
+        <div class="feedback-card-title">
+          <div class="dot dot-green"></div>
+          Strengths
+        </div>
+        <ul class="feedback-list" id="strengths-list"></ul>
+      </div>
+      <div class="feedback-card">
+        <div class="feedback-card-title">
+          <div class="dot dot-amber"></div>
+          Areas to improve
+        </div>
+        <ul class="feedback-list" id="improvements-list"></ul>
+      </div>
+    </div>
+
+    <button class="btn-reset" onclick="resetApp()">
+      <span style="font-size:16px">↩</span> Rate another résumé
+    </button>
+
+  </section>
+
+  <footer style="margin-top:64px">
+    Powered by Claude AI &nbsp;·&nbsp; Results are advisory only
+  </footer>
+
+</div>
+
+<script>
+  let selectedFile = null;
+  let resumeText = '';
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const fileSelected = document.getElementById('file-selected');
+  const fileNameDisplay = document.getElementById('file-name-display');
+  const fileSizeDisplay = document.getElementById('file-size-display');
+  const btnAnalyze = document.getElementById('btn-analyze');
+  const errorBox = document.getElementById('error-box');
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+  function handleFile(file) {
+    const allowed = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (!['pdf','docx','txt'].includes(ext)) {
+      showError('Please upload a PDF, DOCX, or TXT file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showError('File is too large. Maximum size is 5MB.');
+      return;
+    }
+    hideError();
+    selectedFile = file;
+    fileNameDisplay.textContent = file.name;
+    fileSizeDisplay.textContent = (file.size / 1024).toFixed(0) + ' KB';
+    fileSelected.classList.add('show');
+    btnAnalyze.disabled = false;
+  }
+
+  function showError(msg) { errorBox.textContent = msg; errorBox.classList.add('show'); }
+  function hideError() { errorBox.classList.remove('show'); }
+
+  function setLoading(msg, sub) {
+    document.getElementById('loading-msg').textContent = msg;
+    document.getElementById('loading-sub').textContent = sub;
+  }
+
+  async function extractText(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'txt') {
+      return await file.text();
+    }
+    if (ext === 'docx') {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      return result.value;
+    }
+    if (ext === 'pdf') {
+      return await extractPdfText(file);
+    }
+    return '';
+  }
+
+  async function extractPdfText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const base64 = e.target.result.split(',')[1];
+          resolve({ base64, isPdf: true });
+        } catch (err) { reject(err); }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function analyzeResume() {
+    if (!selectedFile) return;
+    btnAnalyze.disabled = true;
+    hideError();
+
+    document.getElementById('upload-section').style.display = 'none';
+    document.getElementById('loading-section').style.display = 'block';
+    setLoading('Reading your résumé…', 'Extracting content and structure');
+
+    try {
+      let extractedText = await extractText(selectedFile);
+      let messages;
+
+      const systemPrompt = `You are an expert career coach and resume reviewer with 15+ years of experience in HR and recruitment across multiple industries. You evaluate resumes against modern hiring standards including ATS compatibility, impact-driven language, quantified achievements, and professional formatting.
+
+Respond ONLY with a valid JSON object. No markdown, no backticks, no extra text.
+
+The JSON must have this exact structure:
+{
+  "score": <integer 1-100>,
+  "grade": "<one of: Poor | Fair | Good | Strong | Excellent>",
+  "title": "<a 4-7 word punchy verdict phrase>",
+  "summary": "<2-3 sentence overall assessment, honest and specific>",
+  "categories": [
+    { "name": "Contact & Summary", "score": <0-10>, "max": 10, "weight": "10pts" },
+    { "name": "Work Experience", "score": <0-25>, "max": 25, "weight": "25pts" },
+    { "name": "Skills & ATS Keywords", "score": <0-20>, "max": 20, "weight": "20pts" },
+    { "name": "Education & Certifications", "score": <0-15>, "max": 15, "weight": "15pts" },
+    { "name": "Formatting & Readability", "score": <0-15>, "max": 15, "weight": "15pts" },
+    { "name": "Achievements & Impact", "score": <0-15>, "max": 15, "weight": "15pts" }
+  ],
+  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>", "<strength 4>"],
+  "improvements": ["<improvement 1>", "<improvement 2>", "<improvement 3>", "<improvement 4>"]
+}
+
+Be specific and actionable. Scores should reflect genuine quality — not everyone gets 80+.`;
+
+      if (typeof extractedText === 'object' && extractedText.isPdf) {
+        messages = [{
+          role: 'user',
+          content: [
+            {
+              type: 'document',
+              source: { type: 'base64', media_type: 'application/pdf', data: extractedText.base64 }
+            },
+            { type: 'text', text: 'Please rate this resume according to modern hiring standards. Return only the JSON response as specified.' }
+          ]
+        }];
+      } else {
+        if (!extractedText || extractedText.trim().length < 50) {
+          throw new Error('Could not extract enough text from the file. Please try a different format.');
+        }
+        messages = [{
+          role: 'user',
+          content: `Please rate this resume according to modern hiring standards:\n\n${extractedText.substring(0, 8000)}`
+        }];
+      }
+
+      setLoading('Analyzing with AI…', 'Evaluating 6 scoring categories');
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error?.message || 'API request failed');
+      }
+
+      const data = await response.json();
+      const rawText = data.content.map(c => c.text || '').join('');
+
+      let parsed;
+      try {
+        const cleaned = rawText.replace(/```json|```/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch {
+        throw new Error('Could not parse the AI response. Please try again.');
+      }
+
+      setLoading('Building your report…', 'Almost done');
+      setTimeout(() => renderResults(parsed), 600);
+
+    } catch (err) {
+      document.getElementById('loading-section').style.display = 'none';
+      document.getElementById('upload-section').style.display = 'block';
+      btnAnalyze.disabled = false;
+      showError('Error: ' + err.message);
+    }
+  }
+
+  function getGradeStyle(grade) {
+    const map = {
+      'Poor': { bg: 'rgba(192,57,43,0.1)', color: '#922B21', ring: '#C0392B' },
+      'Fair': { bg: 'rgba(211,84,0,0.1)', color: '#943126', ring: '#D35400' },
+      'Good': { bg: 'rgba(212,160,23,0.12)', color: '#7D6608', ring: '#D4A017' },
+      'Strong': { bg: 'rgba(30,132,73,0.1)', color: '#145A32', ring: '#1E8449' },
+      'Excellent': { bg: 'rgba(11,107,58,0.1)', color: '#0B5345', ring: '#0B6B3A' },
+    };
+    return map[grade] || map['Good'];
+  }
+
+  function renderResults(data) {
+    document.getElementById('loading-section').style.display = 'none';
+    document.getElementById('results-section').style.display = 'block';
+
+    const style = getGradeStyle(data.grade);
+
+    // Score ring
+    const ring = document.getElementById('score-ring-fill');
+    const circumference = 2 * Math.PI * 70;
+    ring.style.stroke = style.ring;
+    ring.style.strokeDasharray = circumference;
+    ring.style.strokeDashoffset = circumference;
+
+    // Animate score number
+    let current = 0;
+    const target = Math.min(Math.max(parseInt(data.score), 0), 100);
+    const scoreEl = document.getElementById('score-display');
+    const duration = 1500;
+    const start = performance.now();
+
+    function animScore(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      current = Math.round(eased * target);
+      scoreEl.textContent = current;
+      const offset = circumference - (circumference * eased * target / 100);
+      ring.style.strokeDashoffset = offset;
+      if (progress < 1) requestAnimationFrame(animScore);
+    }
+    requestAnimationFrame(animScore);
+
+    // Grade pill
+    const pill = document.getElementById('grade-pill');
+    pill.textContent = data.grade;
+    pill.style.background = style.bg;
+    pill.style.color = style.color;
+    pill.style.border = `1px solid ${style.ring}33`;
+
+    document.getElementById('result-title').textContent = data.title;
+    document.getElementById('result-summary').textContent = data.summary;
+
+    // Categories
+    const grid = document.getElementById('categories-grid');
+    grid.innerHTML = '';
+    data.categories.forEach((cat, i) => {
+      const pct = Math.round((cat.score / cat.max) * 100);
+      const barColor = pct >= 80 ? '#1E8449' : pct >= 60 ? '#C9A227' : '#C0392B';
+      const row = document.createElement('div');
+      row.className = 'cat-row';
+      row.innerHTML = `
+        <div>
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-weight">${cat.weight}</div>
+        </div>
+        <div class="cat-bar-track">
+          <div class="cat-bar-fill" data-pct="${pct}" style="background:${barColor}"></div>
+        </div>
+        <div class="cat-score">${cat.score}<span style="color:var(--ink-muted);font-size:11px">/${cat.max}</span></div>`;
+      grid.appendChild(row);
+
+      setTimeout(() => {
+        row.classList.add('visible');
+        setTimeout(() => {
+          row.querySelector('.cat-bar-fill').style.width = pct + '%';
+        }, 100);
+      }, i * 100);
+    });
+
+    // Feedback
+    const strengthsList = document.getElementById('strengths-list');
+    const improvsList = document.getElementById('improvements-list');
+    strengthsList.innerHTML = '';
+    improvsList.innerHTML = '';
+    (data.strengths || []).forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      strengthsList.appendChild(li);
+    });
+    (data.improvements || []).forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      improvsList.appendChild(li);
+    });
+  }
+
+  function resetApp() {
+    document.getElementById('results-section').style.display = 'none';
+    document.getElementById('upload-section').style.display = 'block';
+    fileSelected.classList.remove('show');
+    fileInput.value = '';
+    selectedFile = null;
+    btnAnalyze.disabled = true;
+    hideError();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
