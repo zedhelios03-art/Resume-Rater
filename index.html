@@ -34,7 +34,6 @@
     overflow-x: hidden;
   }
 
-  /* GRID BACKGROUND */
   body::before {
     content: '';
     position: fixed;
@@ -55,7 +54,6 @@
     padding: 0 24px 80px;
   }
 
-  /* HEADER */
   header {
     padding: 56px 0 48px;
     border-bottom: 1px solid var(--border);
@@ -82,10 +80,7 @@
     letter-spacing: -0.02em;
   }
 
-  h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
+  h1 em { font-style: italic; color: var(--gold); }
 
   .tagline {
     font-size: 15px;
@@ -107,7 +102,6 @@
     flex-shrink: 0;
   }
 
-  /* UPLOAD */
   #upload-section { margin-bottom: 48px; }
 
   .drop-zone {
@@ -135,24 +129,9 @@
     height: 100%;
   }
 
-  .upload-icon {
-    font-size: 40px;
-    margin-bottom: 16px;
-    line-height: 1;
-  }
-
-  .drop-label {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
-
-  .drop-sub {
-    font-size: 13px;
-    color: var(--ink-muted);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.04em;
-  }
+  .upload-icon { font-size: 40px; margin-bottom: 16px; line-height: 1; }
+  .drop-label { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 8px; }
+  .drop-sub { font-size: 13px; color: var(--ink-muted); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
 
   .file-selected {
     margin-top: 20px;
@@ -197,7 +176,6 @@
   .btn-analyze:hover { background: #333; }
   .btn-analyze:disabled { background: var(--ink-muted); cursor: not-allowed; }
 
-  /* LOADING */
   #loading-section { display: none; text-align: center; padding: 80px 0; }
 
   .loading-ring {
@@ -212,19 +190,9 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .loading-msg {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    margin-bottom: 8px;
-  }
+  .loading-msg { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 8px; }
+  .loading-sub { font-size: 13px; color: var(--ink-muted); font-family: 'DM Mono', monospace; }
 
-  .loading-sub {
-    font-size: 13px;
-    color: var(--ink-muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* RESULTS */
   #results-section { display: none; }
 
   .result-header {
@@ -237,21 +205,9 @@
     border-bottom: 1px solid var(--border);
   }
 
-  /* SCORE RING */
-  .score-ring-wrap {
-    position: relative;
-    width: 160px;
-    height: 160px;
-    flex-shrink: 0;
-  }
-
+  .score-ring-wrap { position: relative; width: 160px; height: 160px; flex-shrink: 0; }
   .score-ring-wrap svg { transform: rotate(-90deg); }
-
-  .score-ring-bg {
-    fill: none;
-    stroke: var(--border);
-    stroke-width: 6;
-  }
+  .score-ring-bg { fill: none; stroke: var(--border); stroke-width: 6; }
 
   .score-ring-fill {
     fill: none;
@@ -271,21 +227,8 @@
     justify-content: center;
   }
 
-  .score-number {
-    font-family: 'DM Serif Display', serif;
-    font-size: 48px;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .score-denom {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-muted);
-    margin-top: 2px;
-  }
-
-  .result-meta {}
+  .score-number { font-family: 'DM Serif Display', serif; font-size: 48px; line-height: 1; letter-spacing: -0.02em; }
+  .score-denom { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
 
   .grade-pill {
     display: inline-block;
@@ -298,21 +241,9 @@
     margin-bottom: 12px;
   }
 
-  .result-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 32px; line-height: 1.1; margin-bottom: 10px; }
+  .result-summary { font-size: 15px; color: var(--ink-soft); line-height: 1.65; font-weight: 300; }
 
-  .result-summary {
-    font-size: 15px;
-    color: var(--ink-soft);
-    line-height: 1.65;
-    font-weight: 300;
-  }
-
-  /* CATEGORIES */
   .section-label {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -325,12 +256,7 @@
     gap: 10px;
   }
 
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   .categories-grid {
     display: flex;
@@ -357,26 +283,9 @@
 
   .cat-row:last-child { border-bottom: none; }
   .cat-row.visible { opacity: 1; transform: none; }
-
-  .cat-name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .cat-weight {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-muted);
-    margin-top: 2px;
-  }
-
-  .cat-bar-track {
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
+  .cat-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .cat-weight { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+  .cat-bar-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
 
   .cat-bar-fill {
     height: 100%;
@@ -386,21 +295,9 @@
     background: var(--gold);
   }
 
-  .cat-score {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: right;
-    color: var(--ink);
-  }
+  .cat-score { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; text-align: right; color: var(--ink); }
 
-  /* FEEDBACK */
-  .feedback-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 48px;
-  }
+  .feedback-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; }
 
   @media (max-width: 580px) {
     .feedback-cols { grid-template-columns: 1fr; }
@@ -408,12 +305,7 @@
     .score-ring-wrap { margin: 0 auto; }
   }
 
-  .feedback-card {
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px;
-    background: rgba(255,255,255,0.5);
-  }
+  .feedback-card { border: 1px solid var(--border); border-radius: 4px; padding: 20px; background: rgba(255,255,255,0.5); }
 
   .feedback-card-title {
     font-family: 'DM Mono', monospace;
@@ -426,22 +318,11 @@
     gap: 8px;
   }
 
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot-green { background: var(--green-grade); }
   .dot-amber { background: var(--yellow-grade); }
 
-  .feedback-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .feedback-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 
   .feedback-list li {
     font-size: 13.5px;
@@ -452,16 +333,8 @@
     font-weight: 300;
   }
 
-  .feedback-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--ink-muted);
-    font-size: 11px;
-    top: 2px;
-  }
+  .feedback-list li::before { content: '—'; position: absolute; left: 0; color: var(--ink-muted); font-size: 11px; top: 2px; }
 
-  /* RESET */
   .btn-reset {
     font-family: 'Outfit', sans-serif;
     font-size: 13px;
@@ -482,7 +355,6 @@
 
   .btn-reset:hover { color: var(--ink); border-color: var(--ink); }
 
-  /* ERROR */
   .error-box {
     display: none;
     background: rgba(192,57,43,0.06);
@@ -518,10 +390,9 @@
       <h1>Rate your<br><em>résumé.</em></h1>
       <p class="tagline">Instant AI-powered scoring based on modern hiring standards.</p>
     </div>
-    <div class="header-badge">v2.0 · claude-powered</div>
+    <div class="header-badge">v2.0 · groq-powered</div>
   </header>
 
-  <!-- UPLOAD -->
   <section id="upload-section">
     <div class="drop-zone" id="drop-zone">
       <input type="file" id="file-input" accept=".pdf,.docx,.txt" />
@@ -543,16 +414,13 @@
     </button>
   </section>
 
-  <!-- LOADING -->
   <section id="loading-section">
     <div class="loading-ring"></div>
     <div class="loading-msg" id="loading-msg">Reading your résumé…</div>
     <div class="loading-sub" id="loading-sub">Extracting content and structure</div>
   </section>
 
-  <!-- RESULTS -->
   <section id="results-section">
-
     <div class="result-header">
       <div class="score-ring-wrap">
         <svg width="160" height="160" viewBox="0 0 160 160">
@@ -564,7 +432,6 @@
           <div class="score-denom">/ 100</div>
         </div>
       </div>
-
       <div class="result-meta">
         <div class="grade-pill" id="grade-pill">—</div>
         <div class="result-title" id="result-title">—</div>
@@ -577,17 +444,11 @@
 
     <div class="feedback-cols">
       <div class="feedback-card">
-        <div class="feedback-card-title">
-          <div class="dot dot-green"></div>
-          Strengths
-        </div>
+        <div class="feedback-card-title"><div class="dot dot-green"></div>Strengths</div>
         <ul class="feedback-list" id="strengths-list"></ul>
       </div>
       <div class="feedback-card">
-        <div class="feedback-card-title">
-          <div class="dot dot-amber"></div>
-          Areas to improve
-        </div>
+        <div class="feedback-card-title"><div class="dot dot-amber"></div>Areas to improve</div>
         <ul class="feedback-list" id="improvements-list"></ul>
       </div>
     </div>
@@ -595,107 +456,22 @@
     <button class="btn-reset" onclick="resetApp()">
       <span style="font-size:16px">↩</span> Rate another résumé
     </button>
-
   </section>
 
   <footer style="margin-top:64px">
-    Powered by Claude AI &nbsp;·&nbsp; Results are advisory only
+    Powered by Groq AI &nbsp;·&nbsp; Results are advisory only
   </footer>
 
 </div>
 
 <script>
-  let selectedFile = null;
-  let resumeText = '';
+  // ======================================================
+  // CONFIGURATION — update this URL to your Cloudflare Worker
+  // ======================================================
+  const WORKER_URL = 'https://resume-rater-proxy.zed-helios03.workers.dev';
+  // ======================================================
 
-  const dropZone = document.getElementById('drop-zone');
-  const fileInput = document.getElementById('file-input');
-  const fileSelected = document.getElementById('file-selected');
-  const fileNameDisplay = document.getElementById('file-name-display');
-  const fileSizeDisplay = document.getElementById('file-size-display');
-  const btnAnalyze = document.getElementById('btn-analyze');
-  const errorBox = document.getElementById('error-box');
-
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropZone.classList.remove('dragover');
-    const f = e.dataTransfer.files[0];
-    if (f) handleFile(f);
-  });
-  fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
-
-  function handleFile(file) {
-    const allowed = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
-    const ext = file.name.split('.').pop().toLowerCase();
-    if (!['pdf','docx','txt'].includes(ext)) {
-      showError('Please upload a PDF, DOCX, or TXT file.');
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      showError('File is too large. Maximum size is 5MB.');
-      return;
-    }
-    hideError();
-    selectedFile = file;
-    fileNameDisplay.textContent = file.name;
-    fileSizeDisplay.textContent = (file.size / 1024).toFixed(0) + ' KB';
-    fileSelected.classList.add('show');
-    btnAnalyze.disabled = false;
-  }
-
-  function showError(msg) { errorBox.textContent = msg; errorBox.classList.add('show'); }
-  function hideError() { errorBox.classList.remove('show'); }
-
-  function setLoading(msg, sub) {
-    document.getElementById('loading-msg').textContent = msg;
-    document.getElementById('loading-sub').textContent = sub;
-  }
-
-  async function extractText(file) {
-    const ext = file.name.split('.').pop().toLowerCase();
-    if (ext === 'txt') {
-      return await file.text();
-    }
-    if (ext === 'docx') {
-      const arrayBuffer = await file.arrayBuffer();
-      const result = await mammoth.extractRawText({ arrayBuffer });
-      return result.value;
-    }
-    if (ext === 'pdf') {
-      return await extractPdfText(file);
-    }
-    return '';
-  }
-
-  async function extractPdfText(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        try {
-          const base64 = e.target.result.split(',')[1];
-          resolve({ base64, isPdf: true });
-        } catch (err) { reject(err); }
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function analyzeResume() {
-    if (!selectedFile) return;
-    btnAnalyze.disabled = true;
-    hideError();
-
-    document.getElementById('upload-section').style.display = 'none';
-    document.getElementById('loading-section').style.display = 'block';
-    setLoading('Reading your résumé…', 'Extracting content and structure');
-
-    try {
-      let extractedText = await extractText(selectedFile);
-      let messages;
-
-      const systemPrompt = `You are an expert career coach and resume reviewer with 15+ years of experience in HR and recruitment across multiple industries. You evaluate resumes against modern hiring standards including ATS compatibility, impact-driven language, quantified achievements, and professional formatting.
+  const SYSTEM_PROMPT = `You are an expert career coach and resume reviewer with 15+ years of experience in HR and recruitment across multiple industries. You evaluate resumes against modern hiring standards including ATS compatibility, impact-driven language, quantified achievements, and professional formatting.
 
 Respond ONLY with a valid JSON object. No markdown, no backticks, no extra text.
 
@@ -719,47 +495,116 @@ The JSON must have this exact structure:
 
 Be specific and actionable. Scores should reflect genuine quality — not everyone gets 80+.`;
 
-      if (typeof extractedText === 'object' && extractedText.isPdf) {
-        messages = [{
-          role: 'user',
-          content: [
-            {
-              type: 'document',
-              source: { type: 'base64', media_type: 'application/pdf', data: extractedText.base64 }
-            },
-            { type: 'text', text: 'Please rate this resume according to modern hiring standards. Return only the JSON response as specified.' }
-          ]
-        }];
-      } else {
-        if (!extractedText || extractedText.trim().length < 50) {
-          throw new Error('Could not extract enough text from the file. Please try a different format.');
-        }
-        messages = [{
-          role: 'user',
-          content: `Please rate this resume according to modern hiring standards:\n\n${extractedText.substring(0, 8000)}`
-        }];
+  let selectedFile = null;
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const fileSelected = document.getElementById('file-selected');
+  const fileNameDisplay = document.getElementById('file-name-display');
+  const fileSizeDisplay = document.getElementById('file-size-display');
+  const btnAnalyze = document.getElementById('btn-analyze');
+  const errorBox = document.getElementById('error-box');
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+  function handleFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (!['pdf','docx','txt'].includes(ext)) {
+      showError('Please upload a PDF, DOCX, or TXT file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showError('File is too large. Maximum size is 5MB.');
+      return;
+    }
+    hideError();
+    selectedFile = file;
+    fileNameDisplay.textContent = file.name;
+    fileSizeDisplay.textContent = (file.size / 1024).toFixed(0) + ' KB';
+    fileSelected.classList.add('show');
+    btnAnalyze.disabled = false;
+  }
+
+  function showError(msg) { errorBox.textContent = msg; errorBox.classList.add('show'); }
+  function hideError() { errorBox.classList.remove('show'); }
+  function setLoading(msg, sub) {
+    document.getElementById('loading-msg').textContent = msg;
+    document.getElementById('loading-sub').textContent = sub;
+  }
+
+  async function extractText(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (ext === 'txt') return await file.text();
+    if (ext === 'docx') {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      return result.value;
+    }
+    if (ext === 'pdf') {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            resolve(atob(e.target.result.split(',')[1])
+              .split('')
+              .map(c => c.charCodeAt(0) > 31 && c.charCodeAt(0) < 127 ? c : ' ')
+              .join('')
+              .replace(/\s+/g, ' ')
+              .trim());
+          } catch(err) { reject(err); }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    return '';
+  }
+
+  async function analyzeResume() {
+    if (!selectedFile) return;
+    btnAnalyze.disabled = true;
+    hideError();
+
+    document.getElementById('upload-section').style.display = 'none';
+    document.getElementById('loading-section').style.display = 'block';
+    setLoading('Reading your résumé…', 'Extracting content and structure');
+
+    try {
+      const extractedText = await extractText(selectedFile);
+
+      if (!extractedText || extractedText.trim().length < 50) {
+        throw new Error('Could not extract enough text from the file. Please try a TXT or DOCX format.');
       }
 
       setLoading('Analyzing with AI…', 'Evaluating 6 scoring categories');
 
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      // ── Call Cloudflare Worker → Groq ──
+      const response = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: `Please rate this resume:\n\n${extractedText.substring(0, 6000)}` }
+          ]
         })
       });
 
       if (!response.ok) {
         const err = await response.json();
-        throw new Error(err.error?.message || 'API request failed');
+        throw new Error(err.error?.message || 'Worker request failed. Check your Cloudflare Worker.');
       }
 
+      // ── Parse Groq response format ──
       const data = await response.json();
-      const rawText = data.content.map(c => c.text || '').join('');
+      const rawText = data.choices[0].message.content;
 
       let parsed;
       try {
@@ -782,11 +627,11 @@ Be specific and actionable. Scores should reflect genuine quality — not everyo
 
   function getGradeStyle(grade) {
     const map = {
-      'Poor': { bg: 'rgba(192,57,43,0.1)', color: '#922B21', ring: '#C0392B' },
-      'Fair': { bg: 'rgba(211,84,0,0.1)', color: '#943126', ring: '#D35400' },
-      'Good': { bg: 'rgba(212,160,23,0.12)', color: '#7D6608', ring: '#D4A017' },
-      'Strong': { bg: 'rgba(30,132,73,0.1)', color: '#145A32', ring: '#1E8449' },
-      'Excellent': { bg: 'rgba(11,107,58,0.1)', color: '#0B5345', ring: '#0B6B3A' },
+      'Poor':      { bg: 'rgba(192,57,43,0.1)',   color: '#922B21', ring: '#C0392B' },
+      'Fair':      { bg: 'rgba(211,84,0,0.1)',    color: '#943126', ring: '#D35400' },
+      'Good':      { bg: 'rgba(212,160,23,0.12)', color: '#7D6608', ring: '#D4A017' },
+      'Strong':    { bg: 'rgba(30,132,73,0.1)',   color: '#145A32', ring: '#1E8449' },
+      'Excellent': { bg: 'rgba(11,107,58,0.1)',   color: '#0B5345', ring: '#0B6B3A' },
     };
     return map[grade] || map['Good'];
   }
@@ -796,34 +641,28 @@ Be specific and actionable. Scores should reflect genuine quality — not everyo
     document.getElementById('results-section').style.display = 'block';
 
     const style = getGradeStyle(data.grade);
-
-    // Score ring
     const ring = document.getElementById('score-ring-fill');
     const circumference = 2 * Math.PI * 70;
     ring.style.stroke = style.ring;
     ring.style.strokeDasharray = circumference;
     ring.style.strokeDashoffset = circumference;
 
-    // Animate score number
     let current = 0;
     const target = Math.min(Math.max(parseInt(data.score), 0), 100);
     const scoreEl = document.getElementById('score-display');
-    const duration = 1500;
     const start = performance.now();
 
     function animScore(now) {
       const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min(elapsed / 1500, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       current = Math.round(eased * target);
       scoreEl.textContent = current;
-      const offset = circumference - (circumference * eased * target / 100);
-      ring.style.strokeDashoffset = offset;
+      ring.style.strokeDashoffset = circumference - (circumference * eased * target / 100);
       if (progress < 1) requestAnimationFrame(animScore);
     }
     requestAnimationFrame(animScore);
 
-    // Grade pill
     const pill = document.getElementById('grade-pill');
     pill.textContent = data.grade;
     pill.style.background = style.bg;
@@ -833,7 +672,6 @@ Be specific and actionable. Scores should reflect genuine quality — not everyo
     document.getElementById('result-title').textContent = data.title;
     document.getElementById('result-summary').textContent = data.summary;
 
-    // Categories
     const grid = document.getElementById('categories-grid');
     grid.innerHTML = '';
     data.categories.forEach((cat, i) => {
@@ -847,33 +685,25 @@ Be specific and actionable. Scores should reflect genuine quality — not everyo
           <div class="cat-weight">${cat.weight}</div>
         </div>
         <div class="cat-bar-track">
-          <div class="cat-bar-fill" data-pct="${pct}" style="background:${barColor}"></div>
+          <div class="cat-bar-fill" style="background:${barColor}"></div>
         </div>
         <div class="cat-score">${cat.score}<span style="color:var(--ink-muted);font-size:11px">/${cat.max}</span></div>`;
       grid.appendChild(row);
-
       setTimeout(() => {
         row.classList.add('visible');
-        setTimeout(() => {
-          row.querySelector('.cat-bar-fill').style.width = pct + '%';
-        }, 100);
+        setTimeout(() => { row.querySelector('.cat-bar-fill').style.width = pct + '%'; }, 100);
       }, i * 100);
     });
 
-    // Feedback
     const strengthsList = document.getElementById('strengths-list');
     const improvsList = document.getElementById('improvements-list');
     strengthsList.innerHTML = '';
     improvsList.innerHTML = '';
     (data.strengths || []).forEach(s => {
-      const li = document.createElement('li');
-      li.textContent = s;
-      strengthsList.appendChild(li);
+      const li = document.createElement('li'); li.textContent = s; strengthsList.appendChild(li);
     });
     (data.improvements || []).forEach(s => {
-      const li = document.createElement('li');
-      li.textContent = s;
-      improvsList.appendChild(li);
+      const li = document.createElement('li'); li.textContent = s; improvsList.appendChild(li);
     });
   }
 
